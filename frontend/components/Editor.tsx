@@ -27,12 +27,12 @@ const CollaborativeEditor: React.FC<EditorProps> = ({ roomSlug }) => {
         { token: 'string', foreground: 'A1A1A1' },
       ],
       colors: {
-        'editor.background': '#02020300', // transparent background for glass effect
+        'editor.background': '#020203', // Solid background prevents artifacting
         'editor.foreground': '#F5F5F7',
         'editorCursor.foreground': '#FFFFFF',
         'editor.lineHighlightBackground': '#FFFFFF05',
-        'editorLineNumber.foreground': '#222222',
-        'editor.selectionBackground': '#FFFFFF10',
+        'editorLineNumber.foreground': '#444444',
+        'editor.selectionBackground': '#FFFFFF15',
       }
     });
 
@@ -84,27 +84,32 @@ const CollaborativeEditor: React.FC<EditorProps> = ({ roomSlug }) => {
       </div>
 
       {/* Actual Editor Stage */}
-      <div className="flex-1 bg-transparent">
+      <div className="flex-1 overflow-hidden relative">
         <Editor
           height="100%"
           defaultLanguage="typescript"
           defaultValue="// Collaboration active. Code here..."
           theme="stealth-dark"
           options={{
-            fontSize: 14,
-            fontFamily: "'Geist Mono', ui-monospace, monospace",
-            minimap: { enabled: false },
-            padding: { top: 20 },
+            fontSize: 15,
+            fontFamily: "'Geist Mono', Consolas, 'Courier New', monospace",
+            minimap: { enabled: true, renderCharacters: false, scale: 0.75 },
+            padding: { top: 24, bottom: 24 },
             scrollbar: {
-              vertical: 'hidden',
-              horizontal: 'hidden'
+              vertical: 'visible',
+              horizontal: 'visible',
+              verticalScrollbarSize: 10,
+              horizontalScrollbarSize: 10,
+              useShadows: false,
             },
+            cursorSmoothCaretAnimation: "on",
+            smoothScrolling: true,
+            wordWrap: "on",
+            lineHeight: 1.6,
             hideCursorInOverviewRuler: true,
             lineNumbersMinChars: 3,
-            glyphMargin: false,
-            folding: false,
-            lineDecorationsWidth: 0,
-            overviewRulerBorder: false,
+            glyphMargin: true,
+            folding: true,
             renderLineHighlight: 'all',
           }}
           onMount={handleEditorDidMount}
