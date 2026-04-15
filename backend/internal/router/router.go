@@ -4,6 +4,7 @@ import (
 	"github.com/codespace-app/backend/internal/config"
 	"github.com/codespace-app/backend/internal/handlers"
 	"github.com/codespace-app/backend/internal/middleware"
+	"github.com/codespace-app/backend/internal/judge"
 	"github.com/codespace-app/backend/internal/repository"
 	"github.com/codespace-app/backend/internal/ws"
 	"github.com/gin-gonic/gin"
