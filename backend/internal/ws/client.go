@@ -70,7 +70,7 @@ func (c *Client) ReadPump() {
 			Type:    messageType,
 			sender:  c,
 		})
-	}
+	} 
 }
 
 

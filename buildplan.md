@@ -51,12 +51,24 @@
 - `y-monaco` binding syncs editor content and gives collaborator cursors for free
 - Test with two browser tabs before moving to Phase 2
 
+---
+
+### 1.5 Shared Focus Radio
+**Effort:** ~1 day  
+**Stack:** WebSocket (Relay), YouTube IFrame API
+
+- Integrated "Lo-Fi Radio" button in the room.
+- Shared state: Play/Pause/Track synced across all peers via the Go Hub.
+- Individual volume sliders (UI only — doesn't affect others).
+- Adds a "premium vibe" for collaborative coding.
+
 **Phase 1 Tech Stack:**
 - Go + Gin
 - Gorilla WebSocket
 - Yjs + y-monaco
 - Monaco Editor
 - Next.js
+- YouTube IFrame API
 
 ---
 
@@ -168,10 +180,11 @@
 | # | Target | Done When |
 |---|--------|-----------|
 | ① | End of Week 1 | Two browser tabs editing the same Monaco instance in real time, cursors visible |
-| ② | End of Week 2 | Share a `/room/:slug` link, someone else joins and you're both editing in real time with cursors visible — **no voice yet** |
+| ② | End of Week 2 | Share a `/room/:slug` link, everyone editing in real time with shared Lo-Fi music |
 | ③ | End of Week 3 | Run code inside the room, output appears below the editor for both users |
-| ④ | End of Week 4 | Pion SFU working — third person joins as silent observer with audio |
+| ④ | End of Week 4 | Voice calls (1:1 and SFU) working — third person joins as silent observer |
 | ⑤ | End of Week 6 | Deployed, shareable URL, posted to GDG / dev communities. Real users. |
+
 
 ---
 
