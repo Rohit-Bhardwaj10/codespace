@@ -13,12 +13,44 @@ export default function RoomPage({ params }: PageProps) {
   const { slug } = use(params);
   const router = useRouter();
   const [radioActive, setRadioActive] = useState(false);
+  const [isValidating, setIsValidating] = useState(true);
+
+  React.useEffect(() => {
+    const validateRoom = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_WS_URL 
+          ? process.env.NEXT_PUBLIC_WS_URL.replace('ws://', 'http://').replace('wss://', 'https://')
+          : 'http://localhost:8080';
+        
+        const res = await fetch(`${apiUrl}/room/${slug}`);
+        if (!res.ok) {
+          router.push('/');
+        } else {
+          setIsValidating(false);
+        }
+      } catch (err) {
+        console.error("Failed to validate room", err);
+        // Fallback or handle offline
+        setIsValidating(false);
+      }
+    };
+    validateRoom();
+  }, [slug, router]);
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     // Add real toast or visual feedback here in Phase 3
     alert("Room URL copied to clipboard.");
   };
+
+  if (isValidating) {
+    return (
+      <div className="h-screen w-full bg-background flex flex-col items-center justify-center gap-6">
+         <div className="w-8 h-8 rounded-full border-t-2 border-r-2 border-emerald-500 animate-spin" />
+         <div className="text-xs font-mono uppercase tracking-widest text-muted">Securing uplink...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative h-screen bg-background flex flex-col font-sans overflow-hidden selection:bg-white/10 selection:text-white">
@@ -54,9 +86,6 @@ export default function RoomPage({ params }: PageProps) {
              className="h-9 px-4 glass glass-hover rounded-xl text-[10px] font-bold tracking-widest uppercase text-foreground transition-all"
            >
              Share Link
-           </button>
-           <button className="h-9 px-6 bg-foreground text-background rounded-xl text-[10px] font-bold tracking-widest uppercase hover:opacity-90 transition-all">
-             Execution API
            </button>
         </div>
       </header>

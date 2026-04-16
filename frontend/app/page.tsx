@@ -15,9 +15,25 @@ export default function LandingPage() {
   };
 
   const handleCreate = async () => {
-    // We'll call the real backend /room/new later, for now random slug
-    const randomSlug = Math.random().toString(36).substring(7);
-    router.push(`/room/${randomSlug}`);
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_WS_URL 
+        ? process.env.NEXT_PUBLIC_WS_URL.replace('ws://', 'http://').replace('wss://', 'https://')
+        : 'http://localhost:8080';
+        
+      const response = await fetch(`${apiUrl}/room/new`, { method: "POST" });
+      
+      if (!response.ok) {
+        throw new Error('Failed to create room');
+      }
+
+      const data = await response.json();
+      router.push(`/room/${data.slug}`);
+    } catch (error) {
+      console.error("Error creating room:", error);
+      // Fallback to local random slug if backend is unreachable 
+      const randomSlug = Math.random().toString(36).substring(7);
+      router.push(`/room/${randomSlug}`);
+    }
   };
 
   return (

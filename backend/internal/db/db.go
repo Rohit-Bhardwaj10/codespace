@@ -26,9 +26,9 @@ func Connect(dsn string) *gorm.DB {
 // For production, prefer versioned SQL migrations instead.
 func AutoMigrate(db *gorm.DB) {
 	if err := db.AutoMigrate(
+		&models.User{},
 		&models.Room{},
 		&models.Role{},
-		&models.User{},
 	); err != nil {
 		log.Fatalf("Auto-migration failed: %v", err)
 	}

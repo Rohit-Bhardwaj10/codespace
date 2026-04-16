@@ -55,14 +55,16 @@ func (c *Client) ReadPump() {
 	})
 
 	for {
-		// ReadMessage returns the message type (Text or Binary).
 		messageType, payload, err := c.conn.ReadMessage()
 		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure, websocket.CloseNoStatusReceived) {
 				log.Printf("[client] unexpected close: %v", err)
 			}
 			break
 		}
+
+		// Refresh read deadline on ANY data received
+		c.conn.SetReadDeadline(time.Now().Add(pongWait))
 
 		c.hub.Broadcast(&Message{
 			room:    c.room,
