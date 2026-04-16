@@ -4,7 +4,6 @@ import (
 	"github.com/codespace-app/backend/internal/config"
 	"github.com/codespace-app/backend/internal/handlers"
 	"github.com/codespace-app/backend/internal/middleware"
-	"github.com/codespace-app/backend/internal/judge"
 	"github.com/codespace-app/backend/internal/repository"
 	"github.com/codespace-app/backend/internal/ws"
 	"github.com/gin-gonic/gin"
@@ -31,9 +30,7 @@ func Setup(cfg *config.Config, db *gorm.DB, hub *ws.Hub) *gin.Engine {
 	// Handlers
 	roomHandler := handlers.NewRoomHandler(roomRepo, roleRepo)
 	authHandler := handlers.NewAuthHandler()
-
-	judgeClient := judge.NewClient(cfg.Judge0APIURL, cfg.Judge0APIKey)
-	executeHandler := handlers.NewExecuteHandler(judgeClient)
+	executeHandler := handlers.NewExecuteHandler()
 
 	wsHandler := handlers.NewWSHandler(hub)
 
